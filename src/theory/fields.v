@@ -41,7 +41,7 @@ Proof.
   apply (strong_extensionality (.* // x)).
   rewrite mult_inverse, commutativity.
   apply (strong_extensionality (.* // y)).
-  rewrite <-associativity, mult_inverse.
+  rewrite <- associativity, mult_inverse.
   ring_simplify. now symmetry.
 Qed.
 

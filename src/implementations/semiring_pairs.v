@@ -31,7 +31,7 @@ Proof.
   rewrite commutativity.
   rewrite (commutativity (pos z)).
   apply (left_cancellation (+) (pos y)).
-  rewrite 2!associativity.
+  rewrite 2!associativity. 
   rewrite <- E, E'. ring.
 Qed.
 
@@ -291,9 +291,10 @@ Section with_full_pseudo_semiring_order.
     symmetry. now apply (strong_extensionality (zn *.)).
   Qed.
 
+  Strategy -10 [ le lt ].
   Global Instance: FullPseudoSemiRingOrder SRpair_le SRpair_lt.
-  Proof. 
-    apply from_full_pseudo_ring_order; try apply _.
+  Proof.
+    apply from_full_pseudo_ring_order; try apply _. 
     now apply strong_setoids.strong_binary_setoid_morphism_commutative.
   Qed. 
 End with_full_pseudo_semiring_order.

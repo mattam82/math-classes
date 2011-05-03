@@ -8,6 +8,8 @@ Require Export Unicode.Utf8 Utf8_core.
 (* Equality *)
 Class Equiv A := equiv: relation A.
 
+Typeclasses Transparent Equiv. 
+
 (* We use this virtually everywhere, and so use "=" for it: *)
 Infix "=" := equiv: type_scope.
 Notation "(=)" := equiv (only parsing).
@@ -87,6 +89,8 @@ Class MultInv A `{Apart A} `{RingZero A} := mult_inv: ApartZero A → A.
 Class Le A := le: relation A.
 Class Lt A := lt: relation A.
 
+Typeclasses Transparent Le Lt.
+
 Definition NonNeg R `{RingZero R} `{Le R} := sig (le ring_zero).
 Definition Pos R `{RingZero R} `{Equiv R} `{Lt R} := sig (lt ring_zero).
 Definition NonPos R `{RingZero R} `{Le R} := sig (λ y, le y ring_zero).
@@ -120,6 +124,8 @@ Instance ringplus_is_semigroupop `{f: RingPlus A}: SemiGroupOp A := f.
 Instance ringmult_is_semigroupop `{f: RingMult A}: SemiGroupOp A := f.
 Instance ringone_is_monoidunit `{c: RingOne A}: MonoidUnit A := c.
 Instance ringzero_is_monoidunit `{c: RingZero A}: MonoidUnit A := c.
+
+Typeclasses Transparent SemiGroupOp RingPlus RingMult.
 
 Hint Extern 10 (Equiv (_ ⟶ _)) => apply @ext_equiv : typeclass_instances.
 Hint Extern 4 (Equiv (ApartZero _)) => apply @sig_equiv : typeclass_instances. 
@@ -205,6 +211,7 @@ Notation "(◎ f )" := (λ g, comp _ _ _ g f) (only parsing).
 Notation "(→)" := (λ x y, x → y).
 
 Class Coerce A B := coerce: A → B.
+Typeclasses Transparent Coerce.
 Implicit Arguments coerce [[Coerce]].
 Notation "' x" := (coerce _ _ x) (at level 20).
 Instance: Params (@coerce) 3.
@@ -234,7 +241,8 @@ Class Commutative `{Equiv B} `(f: A → A → B): Prop := commutativity: `(f x y
 Class HeteroAssociative {A B C AB BC} `{Equiv ABC} 
      (fA_BC: A → BC → ABC) (fBC: B → C → BC) (fAB_C: AB → C → ABC) (fAB : A → B → AB): Prop
    := associativity : `(fA_BC x (fBC y z) = fAB_C (fAB x y) z).
-Class Associative `{Equiv A} f := simple_associativity:> HeteroAssociative f f f f.
+Class Associative `{Equiv A} f := simple_associativity: HeteroAssociative f f f f.
+Hint Resolve @simple_associativity : typeclass_instances.
 Notation ArrowsAssociative C := (∀ {w x y z: C}, HeteroAssociative (◎) (comp z _ _ ) (◎) (comp y x w)).
 
 Class TotalRelation `(R : relation A) : Prop := total : ∀ x y : A, R x y ∨ R y x.

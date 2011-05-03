@@ -55,7 +55,7 @@ Section semiring_order.
     intros E.
     destruct (srorder_partial_minus x y E) as [z Ez].
     exists z. split; [| easy].
-    apply (order_preserving_back (x+)).
+    apply (order_preserving_back (x+)). 
     now rewrite plus_0_r, <-Ez.
   Qed.
 
@@ -569,7 +569,7 @@ Section dec_semiring_order.
   Proof.
     split; try apply _.
        intros x y E. now apply srorder_partial_minus, not_lt_le_flip.
-      intros z. repeat (split; try apply _).
+      intros z. repeat (split; try apply _). 
       intros x y. rewrite !lt_correct. intros [E2a E2b]. split.
        now apply (order_preserving (z+)).
       intros E3. apply E2b. now apply (left_cancellation (+) z).

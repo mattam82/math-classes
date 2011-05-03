@@ -12,7 +12,7 @@ Implicit Arguments den_ne_0 [[R] [ap] [zero]].
 Section contents.
 Context `{IntegralDomain R} `{∀ x y, Decision (x = y)}.
 
-Add Ring R: (stdlib_ring_theory R).
+Add Ring R: (stdlib_ring_theory R). 
 
 Global Instance Frac_equiv: Equiv (Frac R) := λ x y, num x * den y = num y * den x.
 
@@ -165,6 +165,7 @@ Proof.
   unfold equiv, Frac_equiv, Frac_lift in *. simpl.
   now rewrite <-2!preserves_mult, E.
 Qed.
+Typeclasses Transparent SemiGroupOp RingPlus RingMult.
 
 Global Instance: SemiRing_Morphism Frac_lift.
 Proof.

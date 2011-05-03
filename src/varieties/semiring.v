@@ -2,7 +2,7 @@
 Require
   theory.rings categories.variety.
 Require Import
-  Program Morphisms
+  Program Morphisms 
   abstract_algebra universal_algebra ua_homomorphisms workaround_tactics.
 
 Inductive op := plus | mult | zero | one.
@@ -48,15 +48,16 @@ Section from_instance.
     match o with plus => (+) | mult => (.*.) | zero => 0: A | one => 1:A end.
 
   Global Instance: Algebra sig _.
-  Proof. constructor. intro. apply _. intro o. destruct o; simpl; try apply _; unfold Proper; reflexivity. Qed.
+  Proof. constructor. intro. apply _. intro o. destruct o; simpl; try apply _; 
+    unfold Proper; apply reflexivity. Qed.
 
   Lemma laws en (l: Laws en) vars: eval_stmt sig vars en.
   Proof.
-   inversion_clear l; simpl.
-           apply associativity.
+   inversion_clear l; simpl. 
+           apply simple_associativity.
           apply commutativity.
          apply theory.rings.plus_0_l.
-        apply associativity.
+        apply simple_associativity.
        apply commutativity.
       apply theory.rings.mult_1_l.
      unfold algebra_op. simpl.
@@ -90,10 +91,9 @@ Proof.
    intros []; simpl.
       apply rings.preserves_plus.
      apply rings.preserves_mult.
-    change (f tt 0 = 0). apply rings.preserves_0.
+   change (f tt 0 = 0). apply rings.preserves_0.
    change (f tt 1 = 1). apply rings.preserves_1.
-  change (Algebra theory A). apply _.
- change (Algebra theory B). apply _.
+   apply _. apply _.
 Qed. (* todo: these [change]s should not be necessary at all. [apply] is too weak. report bug. *)
 
 Instance decode_variety_and_ops `{v: InVariety theory A}: SemiRing (A tt).

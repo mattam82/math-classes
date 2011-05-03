@@ -112,7 +112,8 @@ Section semiringmor_props.
   Proof. intros. apply preserves_sg_op. Qed.
 
   Instance: SemiRing B := semiringmor_b.
-
+  
+  Typeclasses Transparent SemiGroupOp RingPlus.
   Lemma preserves_2: f 2 = 2.
   Proof. rewrite preserves_plus. now rewrite preserves_1. Qed.
 

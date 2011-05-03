@@ -157,7 +157,8 @@ Instance: SemiRing_Morphism DtoStdQ.
 Proof.
   repeat (split; try apply _).
      exact DtoQ_slow_preserves_plus.
-    exact DtoQ_slow_preserves_0.
+     Typeclasses Transparent MonoidUnit RingZero RingOne.
+     exact DtoQ_slow_preserves_0.
    exact DtoQ_slow_preserves_mult.
   exact DtoQ_slow_preserves_1.
 Qed.

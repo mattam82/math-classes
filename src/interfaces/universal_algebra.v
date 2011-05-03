@@ -182,7 +182,6 @@ Section for_signature.
     Proof.
      constructor; try apply _.
       unfold Setoid. apply _.
-     destruct H0. apply _.
     Qed.
 
     Fixpoint app_tree {V} {o}: Term V o → op_type (Term0 V) o :=

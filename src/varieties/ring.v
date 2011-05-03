@@ -63,7 +63,8 @@ Section encode_with_ops.
     match o with plus => (+) | mult => (.*.) | zero => 0:A | one => 1:A | opp => (-) end.
 
   Global Instance encode_algebra_and_ops: Algebra sig _.
-  Proof. constructor. intro. apply _. intro o. destruct o; simpl; try apply _; unfold Proper; reflexivity. Qed.
+  Proof. constructor. intro. apply _. intro o. destruct o; simpl; 
+    try apply _; unfold Proper; apply reflexivity. Qed.
 
   Add Ring A: (rings.stdlib_ring_theory A).
 
@@ -74,7 +75,7 @@ Section encode_with_ops.
 End encode_with_ops.
 
 Lemma encode_algebra_only `{!AlgebraOps theory A} `{∀ u, Equiv (A u)} `{!Ring (A tt)}: Algebra sig A .
-Proof. constructor; intros []; simpl in *; try apply _. Qed.
+Proof. constructor; intros []; simpl in *; try apply _. red; apply reflexivity. red; apply reflexivity. Qed.
 
 Instance decode_variety_and_ops `{InVariety theory A}: Ring (A tt).
 Proof with simpl; auto.

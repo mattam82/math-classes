@@ -337,6 +337,8 @@ Section dec_partial_order.
 
   Instance: StrongSetoid A := dec_strong_setoid.
 
+  Typeclasses Transparent Lt. (* Needed to show that (lt A H1 : Lt A) *)
+
   Instance dec_strict_partial_order: StrictPartialOrder (≤) (<).
   Proof. split; try apply _. intros x y. now rewrite trivial_apart, lt_correct. Qed.
 

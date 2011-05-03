@@ -74,7 +74,7 @@ Section encode_variety_and_ops.
 End encode_variety_and_ops.
 
 Lemma encode_algebra_only `{!AlgebraOps theory A} `{∀ u, Equiv (A u)} `{!Monoid (A tt)}: Algebra theory A .
-Proof. constructor; intros []; simpl in *; try apply _. Qed.
+Proof. constructor; intros []; apply _. Qed.
 
 Global Instance decode_variety_and_ops `{InVariety theory A}: Monoid (A tt).
 Proof with simpl; auto.

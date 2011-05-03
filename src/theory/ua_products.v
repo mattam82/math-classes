@@ -69,8 +69,6 @@ Section varieties.
     `(∀ i, AlgebraOps et (carriers i))
     `(∀ i, InVariety et (carriers i)).
 
-  Typeclasses Transparent Equiv.
-
   Notation carrier := (carrier et I carriers).
   Let carrier_e := product_e et I carriers _.
 
