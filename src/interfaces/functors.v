@@ -87,13 +87,8 @@ Section compose_functors.
    pose proof (functor_from g).
    pose proof (functor_to g).
    pose proof (functor_to f).
-   constructor; intros; try apply _.
-     apply (@setoids.compose_morphisms _ _ _ _ _ _)...
-     apply (@functor_morphism _ _ _ _ _ _ _ _ _ _ f _)...
-     (* todo: this part really should be automatic *)
-    change (fmap f (fmap g (cat_id: a ⟶ a)) = cat_id).
+   constructor; intros; unfold fmap, comp_Fmap; try apply _; unfold compose.
     repeat try rewrite preserves_id...
-   change (fmap f (fmap g (f0 ◎ g0)) = fmap f (fmap g f0) ◎ fmap f (fmap g g0)).
    repeat try rewrite preserves_comp...
   Qed.
 

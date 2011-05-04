@@ -62,17 +62,20 @@ Section product.
   Qed.
 
   Global Instance projection_morphism i: Setoid_Morphism (λ c: product, c i).
-  Proof. firstorder. Qed.
+  Proof. firstorder auto. Qed.
 End product.
 
 Instance id_morphism `{Setoid T}: Setoid_Morphism (@id T) := {}.
 
-Instance compose_morphisms (A B C: Type)
+Lemma compose_morphisms (A B C: Type)
   `{!Equiv A} `{!Equiv B} `{!Equiv C} (f: A → B) (g: B → C)
   {P: Setoid_Morphism f} {Q: Setoid_Morphism g}: Setoid_Morphism (g ∘ f).
 Proof. destruct P, Q. constructor; apply _. Qed.
 
-Instance: ∀ `{Setoid_Morphism A B f} `{!Inverse f}, Bijective f → Setoid_Morphism (f⁻¹).
+Hint Extern 4 (Setoid_Morphism (_ ∘ _)) => 
+  class_apply compose_morphisms : typeclass_instances.
+
+Lemma inverse_morphism: ∀ `{Setoid_Morphism A B f} `{!Inverse f}, Bijective f → Setoid_Morphism (f⁻¹).
 Proof.
  intros.
  pose proof (setoidmor_a f).
@@ -84,10 +87,13 @@ Proof.
  rewrite (E x x), (E y y); intuition.
 Qed.
 
+Hint Extern 4 (Setoid_Morphism (_ ⁻¹)) => 
+  class_apply inverse_morphism : typeclass_instances.
+
 Instance morphism_proper `{ea: Equiv A} `{eb: Equiv B}: Proper ((=) ==> (=)) (@Setoid_Morphism A B _ _).
 Proof.
  cut (∀ (x y: A → B), x = y → Setoid_Morphism x → Setoid_Morphism y).
-  firstorder.
+  firstorder auto.
  intros x y E [AS BS P].
  constructor; try apply _. intros v w E'.
  rewrite <- (E v), <- (E w), E'; reflexivity.

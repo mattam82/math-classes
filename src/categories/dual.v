@@ -20,19 +20,14 @@ Section contents.
   Instance: ∀ (x y z: Object), Proper ((=) ==> (=) ==> (=)) (@comp Object flipA _ x y z).
   Proof.
    intros x y z ? ? E ? ? F.
-   change (Acomp z y x x1 x0 = Acomp z y x y1 y0).
-   unfold equiv, e.
-   destruct c. rewrite E, F. reflexivity.
+   change (comp (H:=A) _ _ _ x1 x0 = comp (H:=A) _ _ _ y1 y0).
+   now rewrite E, F.
   Qed.
   
   Global Instance cat: @Category Object flipA _ _ _.
   Proof with auto.
    destruct c.
    constructor; try apply _; auto.
-      unfold Setoid, equiv, e.
-      intros.
-      apply arrow_equiv.
-     unfold comp, Arrow, flip.
      repeat intro. symmetry. apply comp_assoc.
     intros. apply id_r.
    intros. apply id_l.

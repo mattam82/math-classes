@@ -254,7 +254,7 @@ Qed.
 (* Making these instances Global is not useful, we don't have PropHolds (1 ≤ x)
   instances anyway and it will only slow down instance resolution (it increases the 
   compilation time of dyadics from 1:35 to 2:28). *)
-Typeclasses Transparent Lt Le.
+
 Instance int_pow_exp_le: 
   ∀ x : A, PropHolds (1 ≤ x) → OrderPreserving (x^).
 Proof.

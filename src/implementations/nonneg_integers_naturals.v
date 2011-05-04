@@ -38,8 +38,7 @@ Program Instance to_nat: Inverse of_nat := λ x, int_abs Z nat (`x).
 
 Instance: Proper ((=) ==> (=)) to_nat.
 Proof.
-  intros [x Ex] [y Ey] E. unfold to_nat. unfold_equivs. 
-  now rewrite E.
+  intros [x Ex] [y Ey] E. unfold to_nat. now rewrite E.
 Qed.
 
 Instance ZPos_to_nat_sr_morphism: SemiRing_Morphism to_nat.

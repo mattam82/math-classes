@@ -75,7 +75,7 @@ Section encode_with_ops.
 End encode_with_ops.
 
 Lemma encode_algebra_only `{!AlgebraOps theory A} `{∀ u, Equiv (A u)} `{!Ring (A tt)}: Algebra sig A .
-Proof. constructor; intros []; simpl in *; try apply _. red; apply reflexivity. red; apply reflexivity. Qed.
+Proof. constructor; intros []; simpl in *; try apply _. Qed.
 
 Instance decode_variety_and_ops `{InVariety theory A}: Ring (A tt).
 Proof with simpl; auto.
@@ -113,8 +113,8 @@ Proof.
    intros []; simpl.
        apply rings.preserves_plus.
       apply rings.preserves_mult.
-     change (f tt 0 = 0). apply rings.preserves_0.
-    change (f tt 1 = 1). apply rings.preserves_1.
+     apply rings.preserves_0.
+    apply rings.preserves_1.
    apply rings.preserves_opp.
   apply encode_algebra_only.
  apply encode_algebra_only.

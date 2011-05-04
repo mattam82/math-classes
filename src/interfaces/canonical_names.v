@@ -5,6 +5,10 @@ Require Import
  RelationClasses Relation_Definitions Morphisms Setoid Program.
 Require Export Unicode.Utf8 Utf8_core.
 
+(* Revert to transparency to allow conversions during unification. *)
+
+Typeclasses Transparent compose flip.
+
 (* Equality *)
 Class Equiv A := equiv: relation A.
 
@@ -89,6 +93,7 @@ Class MultInv A `{Apart A} `{RingZero A} := mult_inv: ApartZero A → A.
 Class Le A := le: relation A.
 Class Lt A := lt: relation A.
 
+Typeclasses Transparent SemiGroupOp MonoidUnit RingPlus RingMult RingZero RingOne.
 Typeclasses Transparent Le Lt.
 
 Definition NonNeg R `{RingZero R} `{Le R} := sig (le ring_zero).
@@ -124,8 +129,6 @@ Instance ringplus_is_semigroupop `{f: RingPlus A}: SemiGroupOp A := f.
 Instance ringmult_is_semigroupop `{f: RingMult A}: SemiGroupOp A := f.
 Instance ringone_is_monoidunit `{c: RingOne A}: MonoidUnit A := c.
 Instance ringzero_is_monoidunit `{c: RingZero A}: MonoidUnit A := c.
-
-Typeclasses Transparent SemiGroupOp RingPlus RingMult.
 
 Hint Extern 10 (Equiv (_ ⟶ _)) => apply @ext_equiv : typeclass_instances.
 Hint Extern 4 (Equiv (ApartZero _)) => apply @sig_equiv : typeclass_instances. 
@@ -224,6 +227,7 @@ Instance: Params (@abs) 6.
 (* Common properties: *)
 Class Inverse `(A → B): Type := inverse: B → A.
 Implicit Arguments inverse [[A] [B] [Inverse]].
+Typeclasses Transparent Inverse.
 Notation "f ⁻¹" := (inverse f) (at level 30).
 
 Class LeftIdentity {A} `{Equiv B} (op: A → B → B) (x: A): Prop := left_identity: ∀ y, op x y = y.

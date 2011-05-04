@@ -133,7 +133,7 @@ Section specialized.
   Global Instance id_morphism `{!Monoid A}: Monoid_Morphism id.
   Proof. repeat (constructor; try apply _); reflexivity. Qed.
 
-  Global Instance compose_morphisms
+  Lemma compose_morphisms
     `{!Monoid_Morphism f} `{!Monoid_Morphism g}: Monoid_Morphism (g ∘ f).
   Proof.
    pose proof (encode_morphism_and_ops (f:=f)) as P.
@@ -143,7 +143,7 @@ Section specialized.
    apply (@decode_morphism_and_ops _ _ _ _ _ _ _ _ _ H).
   Qed.
 
-  Global Instance: ∀ `{H: Monoid_Morphism A B f} `{!Inverse f},
+  Lemma inverse_morphism: ∀ `{H: Monoid_Morphism A B f} `{!Inverse f},
     Bijective f → Monoid_Morphism (f⁻¹).
   Proof.
    intros.
@@ -153,3 +153,10 @@ Section specialized.
    apply (@decode_morphism_and_ops _ _ _ _ _ _ _ _ _ Q).
   Qed.
 End specialized.
+
+(* Avoid eager application. *)
+Hint Extern 4 (Monoid_Morphism (_ ∘ _)) =>
+  class_apply @compose_morphisms : typeclass_instances.
+
+Hint Extern 4 (Monoid_Morphism (_ ⁻¹)) =>
+  class_apply @inverse_morphism : typeclass_instances.
