@@ -24,10 +24,13 @@ Proof.
   now rewrite E.
 Qed.
 
+Instance: Setoid_Morphism of_nat := {}.
+
 Instance: SemiRing_Morphism of_nat.
 Proof.
   pose proof (_ : SemiRing (Z⁺)).
-  repeat (split; try apply _); repeat intro; unfold_equivs.
+  repeat (split; try apply _); 
+  repeat intro; unfold_equivs.
      now apply rings.preserves_plus.
     unfold mon_unit, ringzero_is_monoidunit. now apply rings.preserves_0.
    now apply rings.preserves_mult.
@@ -38,7 +41,8 @@ Program Instance to_nat: Inverse of_nat := λ x, int_abs Z nat (`x).
 
 Instance: Proper ((=) ==> (=)) to_nat.
 Proof.
-  intros [x Ex] [y Ey] E. unfold to_nat. now rewrite E.
+  intros [x Ex] [y Ey] E. unfold to_nat. do 2 red in E. simpl in E. simpl.
+  now rewrite E.
 Qed.
 
 Instance ZPos_to_nat_sr_morphism: SemiRing_Morphism to_nat.

@@ -61,7 +61,7 @@ Section encode_variety_and_ops.
   Global Instance encode_algebra_and_ops: Algebra sig _.
   Proof. constructor. intro. apply _. intro o. destruct o; simpl; try apply _; unfold Proper; reflexivity. Qed.
 
-  Global Instance encode_variety_and_ops: InVariety theory (λ _, A).
+  Global Instance encode_variety_and_ops: InVariety theory (λ _, A) | 10.
   Proof.
    constructor. apply _.
    intros ? [] ?; simpl; unfold algebra_op; simpl.
@@ -130,7 +130,7 @@ Section specialized.
     `{!MonoidUnit C} `{!SemiGroupOp C} `{!Equiv C}
     (f: A → B) (g: B → C).
 
-  Global Instance id_morphism `{!Monoid A}: Monoid_Morphism id.
+  Global Instance id_morphism `{!Monoid A}: Monoid_Morphism (@id A).
   Proof. repeat (constructor; try apply _); reflexivity. Qed.
 
   Lemma compose_morphisms

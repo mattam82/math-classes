@@ -8,11 +8,13 @@ Require Import
 Section naturals_order.
 Context `{Naturals N} `{Apart N} `{!TrivialApart N} `{!FullPseudoSemiRingOrder Nle Nlt}.
 
+Close Scope nat_scope.
+
 Lemma to_semiring_nonneg `{SemiRing R} `{Apart R} `{!FullPseudoSemiRingOrder (A:=R) Rle Rlt}
   `{!SemiRing_Morphism (f : N → R)} n : 0 ≤ f n.
 Proof.
   pattern n. apply naturals.induction; clear n.
-    solve_proper.
+  solve_proper.
    intros. rewrite preserves_0. reflexivity.
   intros n E.
   rewrite preserves_plus, preserves_1.
