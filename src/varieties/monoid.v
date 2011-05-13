@@ -76,7 +76,7 @@ End encode_variety_and_ops.
 Lemma encode_algebra_only `{!AlgebraOps theory A} `{∀ u, Equiv (A u)} `{!Monoid (A tt)}: Algebra theory A .
 Proof. constructor; intros []; apply _. Qed.
 
-Global Instance decode_variety_and_ops `{InVariety theory A}: Monoid (A tt).
+Global Instance decode_variety_and_ops `{InVariety theory A}: Monoid (A tt) | 10.
 Proof with simpl; auto.
  pose proof (λ law lawgood x y z, variety_laws law lawgood (λ s n,
   match s with tt => match n with 0 => x | 1 => y | _ => z end end)) as laws.

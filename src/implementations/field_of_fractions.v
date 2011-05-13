@@ -82,7 +82,7 @@ Proof with try ring.
   rewrite E, E'...
 Qed.
 
-Instance: Ring (Frac R).
+Global Instance: Ring (Frac R).
 Proof. repeat (split; try apply _); ring_on_ring. Qed.
 
 Global Instance Frac_dec_mult_inv: DecMultInv (Frac R) := λ x,
@@ -148,6 +148,8 @@ End contents.
 
 Typeclasses Opaque Frac_equiv.
 
+Require Import dec_fields.
+
 Section morphisms.
 Context `{IntegralDomain R1} `{∀ x y : R1, Decision (x = y)}.
 Context `{IntegralDomain R2} `{∀ x y : R2, Decision (x = y)}.
@@ -159,7 +161,7 @@ Next Obligation.
   now apply (den_ne_0 x).
 Qed.
 
-Instance: Proper ((=) ==>(=)) Frac_lift.
+Instance: Proper ((=) ==> (=)) Frac_lift.
 Proof.
   intros x y E.
   unfold equiv, Frac_equiv, Frac_lift in *. simpl.
@@ -167,41 +169,9 @@ Proof.
 Qed.
 
 Global Instance: SemiRing_Morphism Frac_lift.
-Proof. Set Printing All. Set Typeclasses Depth 2. Set Typeclasses Debug.
-  repeat split; try apply _.
-About monoid.encode_variety_and_ops. 
-Check (fun (A : Type) (e0 : Equiv A) (op0 : SemiGroupOp A)
-                  (unit0 : MonoidUnit A) (H : @Monoid A e0 op0 unit0)
-                  (a : ua_basic.sorts
-                         (universal_algebra.et_sig monoid.theory)) =>
-                @setoid_eq
-                  ((fun
-                      _ : ua_basic.sorts
-                            (universal_algebra.et_sig monoid.theory) => A) a)
-                  ((fun _ : unit => e0) a)
-                  ((fun (A0 : Type) (e1 : Equiv A0) 
-                      (op1 : SemiGroupOp A0) (unit1 : MonoidUnit A0)
-                      (H0 : @Monoid A0 e1 op1 unit1) =>
-                    @ua_basic.algebra_setoids
-                      (universal_algebra.et_sig monoid.theory)
-                      (fun
-                         _ : ua_basic.sorts
-                               (universal_algebra.et_sig monoid.theory) => A0)
-                      (fun _ : unit => e1)
-                      (@monoid.encode_operations A0 op1 unit1)
-                      ((fun (A1 : Type) (e2 : Equiv A1)
-                          (op2 : SemiGroupOp A1) (unit2 : MonoidUnit A1)
-                          (H1 : @Monoid A1 e2 op2 unit2) =>
-                        @universal_algebra.variety_algebra monoid.theory
-                          (fun
-                             _ : ua_basic.sorts
-                                   (universal_algebra.et_sig monoid.theory) =>
-                           A1) (fun _ : unit => e2)
-                          (@monoid.encode_operations A1 op2 unit2)
-                          (@monoid.encode_variety_and_ops A1 e2 op2 unit2 H1))
-                         A0 e1 op1 unit1 H0)) A e0 op0 unit0 H a)).
-  repeat (try split; try apply _); unfold equiv, Frac_equiv, Frac_lift in *; simpl. Print Instances SemiRing_Morphism.
-  
+Proof.
+  pose proof (_:Ring (Frac R1)).
+  repeat (split; try apply _); unfold equiv, Frac_equiv, Frac_lift in *; simpl.
      intros x y. now rewrite preserves_plus, ?preserves_mult.
     now rewrite preserves_0, preserves_1.
    intros x y. now rewrite ?preserves_mult.

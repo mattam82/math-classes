@@ -128,7 +128,8 @@ Next Obligation.
 Qed.
 
 Next Obligation.
-  rewrite <-(naturals.to_semiring_unique NonNeg_inject). simpl.
+  Set Typeclasses Debug.
+  pose (naturals.to_semiring_unique NonNeg_inject t). simpl.
   unfold_equiv. 
   rewrite rings.preserves_opp.
   rewrite spec_abs.
