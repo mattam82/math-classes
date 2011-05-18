@@ -90,9 +90,12 @@ Section retract_is_int.
   End for_another_ring.
   
   (* If we make this an instance, then instance resolution will often loop *)
-  Program Definition retract_is_int: Integers Int2 (U:=retract_is_int_to_ring). 
-  Proof.
-    esplit; try apply _. (* for some reason split doesn't work... *)
+  Program Definition retract_is_int: Integers Int2 (U:=retract_is_int_to_ring) := {| integers_ring := H0 |}.
+  Next Obligation. 
+    apply _.
+  Qed.
+
+  Next Obligation.
     apply integer_initial. intros. 
     unfold integers_to_ring, retract_is_int_to_ring. 
     now apply same_morphism.

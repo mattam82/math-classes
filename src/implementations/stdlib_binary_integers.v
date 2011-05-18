@@ -53,50 +53,6 @@ Proof.
   intros x y E. now apply Znat.Z_of_N_eq_iff.
 Qed.
 
-Ltac partial_application_tactic ::=
-  let rec do_partial_apps H m cont :=
-    match m with
-      | ?m' ?x => class_apply @Reflexive_partial_app_morphism ; 
-        [do_partial_apps H m' idtac|clear H]
-      | _ => cont
-    end
-  in
-  let rec do_partial H ar m :=
-    match ar with
-      | 0 => do_partial_apps H m ltac:(fail 1)
-      | S ?n' =>
-        match m with
-          ?m' ?x => do_partial H n' m'
-        end
-    end
-  in
-  let params m sk fk :=
-    (let m' := fresh in head_of_constr m' m ;
-     let n := fresh in evar (n:nat) ;
-     let v := eval compute in n in clear n ;
-      let H := fresh in
-        assert(H:Params m' v) by typeclasses eauto ;
-          let v' := eval compute in v in subst m';
-            (sk H v' || fail 1))
-    || fk
-  in
-  let on_morphism m cont :=
-    params m ltac:(fun H n => do_partial H n m)
-      ltac:(cont)
-  in
-  match goal with
-    | [ _ : normalization_done |- _ ] => fail 1
-    | [ _ : @Params _ _ _ |- _ ] => fail 1
-    | [ |- @Proper ?T _ (?m ?x) ] =>
-      match goal with
-        | [ H : PartialApplication |- _ ] =>
-          class_apply @Reflexive_partial_app_morphism; [|clear H]
-        | _ => on_morphism (m x)
-          ltac:(class_apply @Reflexive_partial_app_morphism)
-
-      end
-  end.
-
 (* SRpair N and Z are isomorphic *)
 Definition Npair_to_Z (x : SRpair N) : Z := 'pos x - 'neg x.
 

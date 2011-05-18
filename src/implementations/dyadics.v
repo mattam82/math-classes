@@ -191,7 +191,7 @@ Proof.
     reflexivity.
    now destruct E.
   intros x y. unfold sg_op at 2, ringmult_is_semigroupop, dy_mult. simpl.
-  now setoid_replace (0 + 0) with 0 by ring.
+  now setoid_replace (0 + 0:Z) with (0:Z) by ring.
 Qed.
 
 Lemma dy_eq_dec_aux (x y : Dyadic) p : 
@@ -238,6 +238,7 @@ Proof.
     intros [xm xe] [ym ye] E1 e1 e2 E2. 
     unfold equiv, dy_equiv, DtoQ_slow in E1 |- *. simpl in *.
     setoid_replace (xm ^ e1) with (xm ^ e2) by now apply (_ : Proper ((=) ==> (=) ==> (=)) pw). (* fixme *)
+    Existing Instance nonneg_semiring_elements.Proper_instance_2.
     rewrite E2. clear e1 E2.
     rewrite 2!(preserves_nat_pow (f:=ZtoStdQ)).
     rewrite 2!(commutativity ('e2 : Z)).
@@ -383,7 +384,7 @@ Next Obligation.
    eapply dy_eq_dec_aux. eassumption.
   apply rings.flip_le_opp.
   eapply dy_le_dec_aux.
-  simpl. rewrite shiftl_opp. apply rings.flip_le_opp, orders.lt_le. eapply E2.
+  simpl. rewrite shiftl_opp. apply rings.flip_le_opp. apply orders.lt_le, E2.
 Qed.
 Next Obligation. 
   intros x y E1 E2.
@@ -425,10 +426,11 @@ Section embed_rationals.
   Notation DtoQ_slow' := (DtoQ_slow ZtoQ).
   Notation StdQtoQ := (rationals_to_rationals StdQ Q).
 
+  Instance: Params (@DtoQ_slow) 6.
   Lemma DtoQ_slow_correct : DtoQ_slow' = StdQtoQ ∘ DtoStdQ.
   Proof.
-    intros x y E. rewrite <-E. clear y E.
-    unfold DtoQ_slow, compose.
+    intros x y E. unfold compose. rewrite <- E. clear y E.
+    unfold DtoQ_slow.
     rewrite rings.preserves_mult, (preserves_int_pow 2), rings.preserves_2.
     now rewrite (integers.to_ring_unique_alt ZtoQ (StdQtoQ ∘ ZtoStdQ)). 
   Qed.

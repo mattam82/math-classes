@@ -36,7 +36,7 @@ Ltac unfold_equiv := unfold equiv, ZType_equiv, eq in *.
 Lemma ZType_ring_theory: ring_theory zero one add mul sub opp eq.
 Proof. repeat split; repeat intro; axioms.zify; auto with zarith. Qed.
 
-Instance: Ring t | 10 := rings.from_stdlib_ring_theory ZType_ring_theory.
+Instance t_ring: Ring t | 10 := rings.from_stdlib_ring_theory ZType_ring_theory.
 
 Instance inject_ZType_Z: Coerce t Z := to_Z.
 
@@ -73,6 +73,7 @@ Proof. change (SemiRing_Morphism (to_Z⁻¹)). split; apply _. Qed.
 
 Instance: IntegersToRing t := integers.retract_is_int_to_ring of_Z.
 Instance: Integers t := integers.retract_is_int of_Z.
+Instance: Ring t := integers_ring. (* Avoid coming back to t_ring *)
 
 (* Order *)
 Instance ZType_le: Le t := le.
@@ -119,6 +120,7 @@ Next Obligation.
   now apply orders.lt_le.
 Qed.
 
+
 Program Instance: IntAbs t (t⁺) := abs.
 Next Obligation.
   unfold "≤", ZType_le, le.
@@ -128,8 +130,7 @@ Next Obligation.
 Qed.
 
 Next Obligation.
-  Set Typeclasses Debug.
-  pose (naturals.to_semiring_unique NonNeg_inject t). simpl.
+  rewrite <- (naturals.to_semiring_unique NonNeg_inject). simpl.
   unfold_equiv. 
   rewrite rings.preserves_opp.
   rewrite spec_abs.

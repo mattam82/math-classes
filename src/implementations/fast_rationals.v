@@ -110,7 +110,7 @@ Instance bigQ_shiftl: ShiftL bigQ bigZ := λ x k,
     | BigQ.Qq n d => BigQ.Qq n (d ≪ k)
     end
   end.
-
+            
 Instance: ShiftLSpec bigQ bigZ _.
 Proof.
   apply shiftl_spec_from_int_pow.
@@ -133,7 +133,7 @@ Proof.
   rewrite 2!bigQ_div_bigQq.
   rewrite shiftl.preserves_shiftl.
   rewrite <-(shiftl.preserves_shiftl_exp (f:=coerce bigN bigZ)).
-  rewrite shiftl.shiftl_int_pow.
+  rewrite shiftl.shiftl_int_pow. 
   now rewrite dec_fields.dec_mult_inv_distr, associativity.
 Qed.
 
@@ -141,7 +141,7 @@ Instance bigQ_Zshiftl: ShiftL bigQ Z := λ x k, x ≪ 'k.
 
 Instance: ShiftLSpec bigQ Z _.
 Proof.
-  split; unfold shiftl, bigQ_Zshiftl. 
+  split; unfold shiftl, bigQ_Zshiftl.
     solve_proper.
    intro. now apply shiftl_0.
   intros x n.

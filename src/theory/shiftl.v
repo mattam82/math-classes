@@ -11,7 +11,7 @@ Context `{SemiRing A} `{!LeftCancellation (.*.) (2:A)} `{SemiRing B} `{!Biinduct
 Add Ring A: (rings.stdlib_semiring_theory A).
 Add Ring B: (rings.stdlib_semiring_theory B).
 
-Global Instance: Proper ((=) ==> (=) ==> (=)) (≪) | 1.
+Global Instance: @Proper (A -> B -> A) ((=) ==> (=) ==> (=)) (≪) | 1.
 Proof shiftl_proper.
 
 Lemma shiftl_nat_pow_alt `{Naturals B2} `{!NatPowSpec A B2 pw} 
@@ -134,7 +134,7 @@ Proof.
   now rewrite shiftl_base_0.
 Qed.
 
-Context `{Apart A} `{!FullPseudoSemiRingOrder Ale Alt} `{!PropHolds ((1:A) ⪥ 0)}.
+Context `{Apart A} `{!FullPseudoSemiRingOrder (A:=A) Ale Alt} `{!PropHolds ((1:A) ⪥ 0)}.
 
 Let shiftl_strict_order_embedding (x y : A) (n : B) : x < y ↔ x ≪ n < y ≪ n.
 Proof.
