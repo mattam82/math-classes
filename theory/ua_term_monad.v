@@ -87,6 +87,12 @@ Section contents.
   Instance: ∀ `{Equiv A}, Proper ((=) ==> (=)) (@ret M _ A).
   Proof. repeat intro. assumption. Qed.
 
+  Instance: Params (@compose) 3.
+  Instance: Params (@bind) 4.
+
+  Hint Extern 0 (ProperProxy ?R _) =>
+  not_evar R; class_apply @proper_proper_proxy : typeclass_instances.
+
   (* What remains are the laws: *)
   Instance: Monad M.
   Proof with intuition.

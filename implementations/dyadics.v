@@ -435,8 +435,18 @@ Section embed_rationals.
   Global Instance: SemiRing_Morphism DtoQ_slow'.
   Proof. apply (rings.semiring_morphism_proper _ _ DtoQ_slow_correct), _. Qed.
 
+  Instance: Params (@Injective) 4.
+  Unset Typeclasses Limit Intros.
+  (* Otherwise we're backtracking for nothing on 
+     [forall x y, Decision (x = y) instances], trying the same
+     instances on different introductions of the foralls.
+     Iterative Deepening or shorter depths work as well *)
+
   Global Instance: Injective DtoQ_slow'.
-  Proof. rewrite DtoQ_slow_correct. apply _. Qed.
+  Proof.
+    rewrite DtoQ_slow_correct. apply _.
+    (* 3.5 s without limiting intros, 40s when limiting *)
+  Qed.
 
   Global Instance: OrderEmbedding DtoQ_slow'.
   Proof. apply (maps.order_embedding_proper _ _ DtoQ_slow_correct). apply _. Qed.

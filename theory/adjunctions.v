@@ -11,6 +11,9 @@ Local Existing Instance surjective_mor.
 Lemma equal_because_sole `{Setoid T} (P: T → Prop) x: is_sole P x → forall y z, P y → P z → y = z.
 Proof. firstorder. Qed. (* todo: move *)
 
+Remove Hints dual.e : typeclass_instances. (* This should be protected ! *)
+Hint Extern 4 (Equiv (dual.flipA _ _)) => apply @dual.e : typeclass_instances.
+
 Section for_φAdjunction.
 
   (* MacLane p79/p80, showing that from an φAdjunction we can make
